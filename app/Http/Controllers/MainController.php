@@ -36,6 +36,9 @@ class MainController extends Controller
         $response = json_decode($response->getBody(), true);
 		$btc_data = $response['bpi'];
 
+		// the data has 31 day, reducing to 7
+		$btc_data = array_slice($btc_data, -7, 7, true);
+
 		return $btc_data;
 	}
 
