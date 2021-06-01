@@ -23,3 +23,5 @@ Route::get('/', function () {
 Route::get('/btc_chart', [MainController::class, 'showBtcGraph']);
 
 Route::get('/btc_data', [MainController::class, 'getBtcData']);
+
+Route::get('/test', [MainController::class, 'getSimpleLinearRegressionArray']);

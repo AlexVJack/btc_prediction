@@ -13,14 +13,19 @@ class MainController extends Controller
 	{
 		$xAxisData = array_keys($this->getBtcData());
 		$yAxisData = array_values($this->getBtcData());
+		
+		$regression_data = $this->getSimpleLinearRegressionArray($yAxisData);
+		
 		$chart = (new LarapexChart)->lineChart()
 		->setTitle('BTC price')
 		->setSubtitle('Simple linear regression')
 		->addData('BTC', $yAxisData)
-		//->addData('Digital sales', [70, 29, 77, 28, 55, 45])
+		->addData('Regression', $regression_data)
 		->setXAxis($xAxisData);
+
+		$prediction_for_tomorrow = end($regression_data);
 		
-		return view('chart', compact('chart'));
+		return view('chart', compact('chart', 'prediction_for_tomorrow'));
 	}
 
 	public function getBtcData()
@@ -33,4 +38,23 @@ class MainController extends Controller
 
 		return $btc_data;
 	}
+
+	public function getSimpleLinearRegressionArray($data)
+	{
+		$data_length = count($data);
+
+		// the point where SLR intercepts on Y axis
+		$intercept = trader_linearreg_intercept($data, $data_length);
+		$slope = trader_linearreg_slope($data, $data_length);
+
+		$rez = [];
+		// calculate an array depending of intercept and slope
+		// Simple Linear Regression
+		for ($i=0; $i < $data_length + 1; $i++) { 
+			$rez[$i] = $intercept[$data_length - 1] + $slope[$data_length - 1] *$i;
+		}
+
+		return $rez;
+	}
+
 }

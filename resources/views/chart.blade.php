@@ -29,5 +29,10 @@
 {{--<!-- <script src="{{ asset('vendor/larapex-charts/apexchart.js') }}"></script> -->--}}
 
 {{ $chart->script() }}
+
+<div style="text-align: center; font-size: 2rem">
+	<h1>Tomorrow the BTC will be <strong>{{ $prediction_for_tomorrow }}</strong> :)</h1>
+</div>
+
 </body>
 </html>
